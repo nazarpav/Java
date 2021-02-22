@@ -7,8 +7,8 @@ import com.nazar_pavliuk.game.GDX_main;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.height=800;
-		config.width=360;
+		config.width=800;
+		config.height=360;
 		new LwjglApplication(new GDX_main(), config);
 	}
 }
