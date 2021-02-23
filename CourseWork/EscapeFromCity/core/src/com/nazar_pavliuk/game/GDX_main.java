@@ -29,7 +29,7 @@ public class GDX_main extends ApplicationAdapter {
         bg= new ParalaxBackground();
         bg.Create();
         batch = new SpriteBatch();
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = new Skin(Gdx.files.internal("neon/skin/neon-ui.json"));
         stage = new Stage(new ScreenViewport());
         final TextButton button = new TextButton("Left", skin, "default");
         button.setWidth(200);
