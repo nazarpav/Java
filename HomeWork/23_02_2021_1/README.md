@@ -1,5 +1,3 @@
-SPU815 Project
-=================
 idea create maven project
 
 mvn dependency:tree
