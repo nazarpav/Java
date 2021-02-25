@@ -18,41 +18,18 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import java.util.logging.FileHandler;
 
 import ParalaxBackground.ParalaxBackground;
+import UI.MainMenuUI;
 
 public class GDX_main extends ApplicationAdapter {
-    SpriteBatch batch;
-    Stage stage;
-    Skin skin;
     ParalaxBackground bg;
+    MainMenuUI mainMenuUI;
+    SpriteBatch batch;
     @Override
     public void create() {
+        batch= new SpriteBatch();
         bg= new ParalaxBackground();
         bg.Create();
-        batch = new SpriteBatch();
-        skin = new Skin(Gdx.files.internal("neon/skin/neon-ui.json"));
-        stage = new Stage(new ScreenViewport());
-        final TextButton button = new TextButton("Left", skin, "default");
-        button.setWidth(200);
-        button.setHeight(50);
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                bg.MoveX(-5);
-            }
-        });
-        stage.addActor(button);
-        final TextButton button2 = new TextButton("Right", skin, "default");
-        button2.setWidth(200);
-        button2.setHeight(50);
-        button2.setPosition(Gdx.graphics.getWidth()-200,0);
-        button2.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                    bg.MoveX(5);
-            }
-        });
-        stage.addActor(button2);
-        Gdx.input.setInputProcessor(stage);
+        mainMenuUI= new MainMenuUI();
     }
 
     @Override
@@ -61,14 +38,13 @@ public class GDX_main extends ApplicationAdapter {
         batch.begin();
         bg.Draw(batch,1.f,Gdx.graphics.getDeltaTime());
         batch.end();
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
+        mainMenuUI.Draw();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-        skin.dispose();
-        stage.dispose();
+        mainMenuUI.dispose();
+        bg.dispose();
     }
 }
