@@ -1,4 +1,56 @@
 package UI;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.nazar_pavliuk.game.GDX_main;
+import com.nazar_pavliuk.game.scene;
+
+import MAS.MAS;
+import utils.util;
+
 public class GameUI {
+    Stage _stage;
+    public GameUI(Stage stage){
+        float paddingX=util.Scaleer(5.f);
+        float paddingY=util.Scaleer(5.f);
+        Vector2 baseSize = new Vector2(util.Scaleer(74.f),util.Scaleer(60.f));
+        String basePath="game_ui/";
+        String leftButton = "arrowLeft.png";
+        Vector2 sizeLeftButton = new Vector2(baseSize);
+        Vector2 posLeftButton = new Vector2(paddingX,paddingY);
+        String upButton = "arrowUp.png";
+        Vector2 sizeUpButton = new Vector2(baseSize);
+        Vector2 posUpButton = new Vector2(paddingX+sizeLeftButton.x,paddingY);
+        String downButton = "arrowDown.png";
+        Vector2 sizeDownButton = new Vector2(baseSize);
+        Vector2 posDownButton = new Vector2(util.s_x-paddingX-sizeDownButton.x*2,paddingY);
+        String rightButton = "arrowRight.png";
+        Vector2 sizeRightButton = new Vector2(baseSize);
+        Vector2 posRightButton = new Vector2(util.s_x-paddingX-sizeRightButton.x,paddingY);
+        String pauseButton = "pause.png";
+        Vector2 sizePauseButton = new Vector2(baseSize);
+        Vector2 posPauseButton = new Vector2(util.s_x-paddingX-sizePauseButton.x,util.s_y-paddingY-sizePauseButton.y);
+        _stage=stage;
+        _stage.addActor(util.CreateDefImageButton (Gdx.files.internal(basePath+"_"+leftButton),Gdx.files.internal(basePath+leftButton), posLeftButton,sizeLeftButton,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
+            MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
+        }}));
+        _stage.addActor(util.CreateDefImageButton (Gdx.files.internal(basePath+"_"+downButton),Gdx.files.internal(basePath+downButton), posDownButton,sizeDownButton,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
+            MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
+        }}));
+        _stage.addActor(util.CreateDefImageButton (Gdx.files.internal(basePath+"_"+upButton),Gdx.files.internal(basePath+upButton), posUpButton,sizeUpButton,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
+            MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
+        }}));
+        _stage.addActor(util.CreateDefImageButton (Gdx.files.internal(basePath+"_"+rightButton),Gdx.files.internal(basePath+rightButton), posRightButton,sizeRightButton,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
+            MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
+        }}));
+        _stage.addActor(util.CreateDefImageButton (Gdx.files.internal(basePath+"_"+pauseButton),Gdx.files.internal(basePath+pauseButton), posPauseButton,sizePauseButton,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
+            MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
+            GDX_main.Instance().SetScene(scene.Menu);
+        }}));
+    }
 }

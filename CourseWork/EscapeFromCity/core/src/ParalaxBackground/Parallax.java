@@ -25,7 +25,7 @@ public class Parallax {
             screenRT.dispose();
             texture.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
             texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-            array.add(new Pair<Float, Texture>(stepX*i,texture));
+            array.add(new Pair<Float, Texture>((i+1)*stepX,texture));
         }
     }
 }

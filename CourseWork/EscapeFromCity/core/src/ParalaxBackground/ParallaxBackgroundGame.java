@@ -15,21 +15,24 @@ public class ParallaxBackgroundGame {
     private Array<Pair<Float, Texture>> foregrounds = new Array<Pair<Float, Texture>>();
     int s_x= Gdx.graphics.getWidth();
     int s_y=Gdx.graphics.getHeight();
-    int x_pos=0;
+    Float x_posBG=0.f;
+    Float x_posFG=0.f;
     public void Create(){
-        Parallax.InitBackgrounds(backgrounds,backgroundsQuantity,"city/background_",0.2f);
+        Parallax.InitBackgrounds(backgrounds,backgroundsQuantity,"city/background_",0.5f);
         Parallax.InitBackgrounds(foregrounds,foregroundsQuantity,"city/foreground_",1.f);
     }
     public void DrawBG(SpriteBatch bath, Float parentAlpha, Float dt){
+        x_posBG+=2.f;
         for (Pair<Float, Texture>i:backgrounds) {
-            x_pos+=1.f;
-            bath.draw(i.getValue(),0.f,0.f,x_pos,0,s_x,s_y);
+            Float x =x_posBG*i.getKey();
+            bath.draw(i.getValue(),0.f,0.f,x.intValue(),0,s_x,s_y);
         }
     }
     public void DrawFG(SpriteBatch bath, Float parentAlpha, Float dt){
+        x_posFG+=2.f;
         for (Pair<Float, Texture>i:foregrounds) {
-            x_pos+=2.f;
-            bath.draw(i.getValue(),0.f,0.f,x_pos,0,s_x,s_y);
+            Float x =x_posFG*i.getKey();
+            bath.draw(i.getValue(),0.f,0.f,x.intValue(),0,s_x,s_y);
         }
     }
     public void dispose() {
@@ -38,6 +41,6 @@ public class ParallaxBackgroundGame {
         }
     }
     public void MoveX(float step){
-        x_pos+=step;
+//        x_pos+=step;
     }
 }

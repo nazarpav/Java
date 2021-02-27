@@ -19,26 +19,48 @@ import java.util.logging.FileHandler;
 
 import ParalaxBackground.ParalaxBackground;
 import ParalaxBackground.ParallaxBackgroundGame;
+import UI.GameUI;
 import UI.MainMenuUI;
 
 public class GDX_main extends ApplicationAdapter {
+    static  GDX_main instance;
     ParalaxBackground bgMenu;
     ParallaxBackgroundGame bgGame;
     MainMenuUI mainMenuUI;
+    GameUI gameUI;
     SpriteBatch batch;
-    public static scene _scene;
-    public static void SetScene(scene scene_){
+    static Stage _stage;
+    public scene _scene;
+    public static GDX_main Instance() {
+        return instance;
+    }
+    public void SetScene(scene scene_){
         _scene=scene_;
+        _stage.clear();
+        switch (_scene) {
+            case Menu:
+                mainMenuUI= new MainMenuUI(_stage);
+                break;
+            case Game:
+                gameUI = new GameUI(_stage);
+                break;
+        }
+        Gdx.input.setInputProcessor(_stage);
     }
     @Override
     public void create() {
+        if (instance == null) {
+            instance = this;
+        }
+        _stage = new Stage(new ScreenViewport());
         _scene=scene.Menu;
         batch= new SpriteBatch();
         bgMenu= new ParalaxBackground();
-        bgGame= new ParallaxBackgroundGame();
         bgMenu.Create();
+        bgGame= new ParallaxBackgroundGame();
         bgGame.Create();
-        mainMenuUI= new MainMenuUI();
+        mainMenuUI= new MainMenuUI(_stage);
+        Gdx.input.setInputProcessor(_stage);
     }
 
     @Override
@@ -48,7 +70,6 @@ public class GDX_main extends ApplicationAdapter {
         switch (_scene) {
             case Menu:
                 bgMenu.Draw(batch,1.f,Gdx.graphics.getDeltaTime());
-                mainMenuUI.Draw();
                 break;
             case Game:
                 bgGame.DrawBG(batch,1.f,Gdx.graphics.getDeltaTime());
@@ -56,13 +77,13 @@ public class GDX_main extends ApplicationAdapter {
                 break;
         }
         batch.end();
-
+        _stage.act(Gdx.graphics.getDeltaTime());
+        _stage.draw();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-        mainMenuUI.dispose();
         bgMenu.dispose();
     }
 }
