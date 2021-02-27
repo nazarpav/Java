@@ -3,6 +3,9 @@ package utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -12,12 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
+import java.util.Random;
+
 public class util {
     public static int s_x = Gdx.graphics.getWidth();
     public static int s_y = Gdx.graphics.getHeight();
     public static Float testResolutionX=800.f;
     public static Float testResolutionY=400.f;
     static Skin skin;
+    public static Random rnd = new Random();
     static {
         skin = new Skin(Gdx.files.internal("mskin/defskin.json"));
     }
@@ -61,6 +67,25 @@ public class util {
         button.setPosition(pos.x,pos.y);
         button.addListener(click);
         return button;
+    }
+    Animation walkAnimation;
+    Texture walkSheet;
+    TextureRegion[] walkFrames;
+    TextureRegion[] idleFrames;
+    SpriteBatch spriteBatch;
+    TextureRegion currentFrame;
+
+    public static Animation CreateAnimation(FileHandle path, int frameCols, int frameRows, float frameTime){
+        Texture walkSheet = new Texture(path);
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/frameCols, walkSheet.getHeight()/frameRows);
+        TextureRegion[] frames = new TextureRegion[frameCols * frameRows];
+        int index = 0;
+        for (int i = 0; i < frameRows; i++) {
+            for (int j = 0; j < frameCols; j++) {
+                frames[index++] = tmp[i][j];
+            }
+        }
+        return new Animation(frameTime, frames);
     }
     public static Skin GetDefSkin(){
         return  skin;

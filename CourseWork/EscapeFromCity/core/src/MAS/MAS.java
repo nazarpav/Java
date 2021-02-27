@@ -8,7 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 public class MAS {
     private  static Music music;
     private static float m_volume=1.f;
-    private static float s_volume=1.f;
+    private static float s_volume=0.5f;
     public static  void SetDefaulthMusicVolume(float volume){
         m_volume = volume;
     }
