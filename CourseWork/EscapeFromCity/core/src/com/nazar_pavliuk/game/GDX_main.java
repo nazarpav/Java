@@ -18,17 +18,26 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import java.util.logging.FileHandler;
 
 import ParalaxBackground.ParalaxBackground;
+import ParalaxBackground.ParallaxBackgroundGame;
 import UI.MainMenuUI;
 
 public class GDX_main extends ApplicationAdapter {
-    ParalaxBackground bg;
+    ParalaxBackground bgMenu;
+    ParallaxBackgroundGame bgGame;
     MainMenuUI mainMenuUI;
     SpriteBatch batch;
+    public static scene _scene;
+    public static void SetScene(scene scene_){
+        _scene=scene_;
+    }
     @Override
     public void create() {
+        _scene=scene.Menu;
         batch= new SpriteBatch();
-        bg= new ParalaxBackground();
-        bg.Create();
+        bgMenu= new ParalaxBackground();
+        bgGame= new ParallaxBackgroundGame();
+        bgMenu.Create();
+        bgGame.Create();
         mainMenuUI= new MainMenuUI();
     }
 
@@ -36,15 +45,24 @@ public class GDX_main extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        bg.Draw(batch,1.f,Gdx.graphics.getDeltaTime());
+        switch (_scene) {
+            case Menu:
+                bgMenu.Draw(batch,1.f,Gdx.graphics.getDeltaTime());
+                mainMenuUI.Draw();
+                break;
+            case Game:
+                bgGame.DrawBG(batch,1.f,Gdx.graphics.getDeltaTime());
+                bgGame.DrawFG(batch,1.f,Gdx.graphics.getDeltaTime());
+                break;
+        }
         batch.end();
-        mainMenuUI.Draw();
+
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         mainMenuUI.dispose();
-        bg.dispose();
+        bgMenu.dispose();
     }
 }

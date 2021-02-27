@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.nazar_pavliuk.game.GDX_main;
+import com.nazar_pavliuk.game.scene;
 
 import MAS.MAS;
 import utils.util;
@@ -24,7 +26,7 @@ public class MainMenuUI {
         return button;
     }
     public MainMenuUI(){
-        MAS.StopCurrentAndStreamThisMusic(Gdx.files.internal("musics/background0.mp3"));
+//        MAS.StopCurrentAndStreamThisMusic(Gdx.files.internal("musics/background0.mp3"));
         stage = new Stage(new ScreenViewport());
         int s_x=Gdx.graphics.getWidth();
         int s_y=Gdx.graphics.getHeight();
@@ -34,20 +36,21 @@ public class MainMenuUI {
         float buttonPixelStep=button_height+util.Scaleer(5);
         float startYpos=s_y/2-buttonPixelStep*button_count/2;
         int buttonCounter=0;
-        stage.addActor(CreateMenuButton("Start game", button_width,button_height,s_x,startYpos,buttonPixelStep,++buttonCounter,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
+        stage.addActor(CreateMenuButton("Exit", button_width,button_height,s_x,startYpos,buttonPixelStep,++buttonCounter,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
             MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
-        }}));
-        stage.addActor(CreateMenuButton("Settings", button_width,button_height,s_x,startYpos,buttonPixelStep,++buttonCounter,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
-            MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
-
+            Gdx.app.exit();
         }}));
         stage.addActor(CreateMenuButton("Creators", button_width,button_height,s_x,startYpos,buttonPixelStep,++buttonCounter,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
             MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
 
         }}));
-        stage.addActor(CreateMenuButton("Exit", button_width,button_height,s_x,startYpos,buttonPixelStep,++buttonCounter,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
+        stage.addActor(CreateMenuButton("Settings", button_width,button_height,s_x,startYpos,buttonPixelStep,++buttonCounter,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
             MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
 
+        }}));
+        stage.addActor(CreateMenuButton("Start game", button_width,button_height,s_x,startYpos,buttonPixelStep,++buttonCounter,new ClickListener() {@Override public void clicked(InputEvent event, float x, float y) {
+            MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
+            GDX_main.SetScene(scene.Game);
         }}));
         Gdx.input.setInputProcessor(stage);
     }
