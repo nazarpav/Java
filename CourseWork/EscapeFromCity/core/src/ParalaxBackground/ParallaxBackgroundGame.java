@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.nazar_pavliuk.game.GDX_main;
 
 import net.dermetfan.utils.Pair;
 
@@ -35,6 +36,7 @@ public class ParallaxBackgroundGame {
             Float x =x_posFG*i.getKey();
             bath.draw(i.getValue(),0.f,0.f,x.intValue(),0,s_x,s_y);
         }
+        GDX_main.Instance().cam.translate(step,0,0);
     }
     public void dispose() {
         for (Pair<Float, Texture>i:backgrounds) {

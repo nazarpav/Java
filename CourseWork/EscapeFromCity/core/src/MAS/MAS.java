@@ -42,7 +42,7 @@ public class MAS {
         music.play();
     }
     public static void PlaySound(FileHandle path){
-        Sound sound = Gdx.audio.newSound(path);
-        sound.play(s_volume);
+//        Sound sound = Gdx.audio.newSound(path);
+//        sound.play(s_volume);
     }
 }

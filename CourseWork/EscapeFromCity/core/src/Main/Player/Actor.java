@@ -35,6 +35,7 @@ public abstract class Actor implements ApplicationListener {
     public void SetAnimState(AnimMap state){
         Animation newState =  animations.get(state);
         if(newState!=null){
+            if((_currentstate==AnimMap.Attack||_currentstate==AnimMap.Shield)&&stateTime<0.5f)return;
             _currentAnimation=newState;
             _currentstate=state;
             if(state==AnimMap.Death||state==AnimMap.Attack||state==AnimMap.Shield||state==AnimMap.TakeHit){
