@@ -2,6 +2,7 @@ package Main.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 import utils.util;
 
@@ -18,6 +19,9 @@ public class Player extends Actor {
         animations.put(AnimMap.TakeHit, util.CreateAnimation(Gdx.files.internal(basePath+"TakeHit.png"),4,1,0.08f));
         animations.put(AnimMap.Shield, util.CreateAnimation(Gdx.files.internal(basePath+"Shield.png"),4,1,0.1f));
         DrawPos= new Vector2(util.s_x/2/4,-60.f);
+    }
+    public void CreatePhysics(World world){
+        InitPhysisc(world,new Vector2(20,20));
     }
     @Override
     public void render() {

@@ -7,6 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -39,6 +45,19 @@ public class util {
     }
     public static int ScaleerY(int in){
         return Gdx.graphics.getHeight()/testResolutionY.intValue()*in;
+    }
+    public static void InitBody(World world, Body body, Vector2 w_h,Vector2 pos, BodyDef.BodyType type){
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = type;
+            body = world.createBody(bodyDef);
+            bodyDef.position.set(pos.x, pos.y);
+            PolygonShape shape = new PolygonShape();
+            shape.setAsBox(w_h.x, w_h.y);
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = shape;
+            fixtureDef.density = 1f;
+             body.createFixture(fixtureDef);
+            shape.dispose();
     }
     public static int ScaleerX(int in){
         return Gdx.graphics.getWidth()/testResolutionX.intValue()*in;
