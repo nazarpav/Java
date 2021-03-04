@@ -46,7 +46,7 @@ public class util {
     public static int ScaleerY(int in){
         return Gdx.graphics.getHeight()/testResolutionY.intValue()*in;
     }
-    public static void InitBody(World world, Body body, Vector2 w_h,Vector2 pos, BodyDef.BodyType type){
+    public static Body InitBody(World world,Body body, Vector2 w_h,Vector2 pos, BodyDef.BodyType type,float density,float friction,float restitution){
             BodyDef bodyDef = new BodyDef();
             bodyDef.type = type;
             body = world.createBody(bodyDef);
@@ -55,9 +55,12 @@ public class util {
             shape.setAsBox(w_h.x, w_h.y);
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = shape;
-            fixtureDef.density = 1f;
+            fixtureDef.density =density;
+            fixtureDef.friction = friction;
+            fixtureDef.restitution = restitution;
              body.createFixture(fixtureDef);
             shape.dispose();
+            return body;
     }
     public static int ScaleerX(int in){
         return Gdx.graphics.getWidth()/testResolutionX.intValue()*in;

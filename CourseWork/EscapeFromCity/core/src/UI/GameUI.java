@@ -43,7 +43,7 @@ public class GameUI {
         _stage.addActor(util.CreateDefImageButton (Gdx.files.internal(basePath+"_"+leftButton),Gdx.files.internal(basePath+leftButton), posLeftButton,sizeLeftButton,new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GDX_main.Instance().player.SetVelocity(-20.f,0.f);
+                GDX_main.Instance().player.SetVelocity(-260.f,0.f);
                 GDX_main.Instance().player.SetIsFlip(true);
                 GDX_main.Instance().player.SetAnimState(AnimMap.Move);
                 MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
@@ -60,7 +60,7 @@ public class GameUI {
         _stage.addActor(util.CreateDefImageButton (Gdx.files.internal(basePath+"_"+downButton),Gdx.files.internal(basePath+downButton), posDownButton,sizeDownButton,new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GDX_main.Instance().player.SetVelocity(0.f,-20.f);
+                GDX_main.Instance().player.SetVelocity(0.f,-80.f);
                 GDX_main.Instance().player.SetAnimState(AnimMap.Shield);
                 MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
                 return super.touchDown(event, x, y, pointer, button);
@@ -77,7 +77,7 @@ public class GameUI {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 GDX_main.Instance().player.SetAnimState(AnimMap.Attack);
-                GDX_main.Instance().player.SetVelocity(0.f,20.f);
+                GDX_main.Instance().player.SetVelocity(0.f,80.f);
                 MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -91,7 +91,7 @@ public class GameUI {
         _stage.addActor(util.CreateDefImageButton (Gdx.files.internal(basePath+"_"+rightButton),Gdx.files.internal(basePath+rightButton), posRightButton,sizeRightButton,new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GDX_main.Instance().player.SetVelocity(20.f,0.f);
+                GDX_main.Instance().player.SetVelocity(80.f,0.f);
                 GDX_main.Instance().player.SetIsFlip(false);
                 GDX_main.Instance().player.SetAnimState(AnimMap.Move);
                 MAS.PlaySound(Gdx.files.internal("sounds/buttonpres.mp3"));

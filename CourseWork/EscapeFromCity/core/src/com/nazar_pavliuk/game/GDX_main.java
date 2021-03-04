@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -102,7 +103,7 @@ public class GDX_main extends ApplicationAdapter {
         mainMenuUI= new MainMenuUI(_stage);
         player= new Player();
         player.create();
-        player.CreatePhysics(world);
+        player.CreatePhysics(world,new Vector2(150,210));
         flyingEye= new FlyingEye();
         flyingEye.create();
         goblin= new Goblin();
@@ -112,7 +113,9 @@ public class GDX_main extends ApplicationAdapter {
         debugMatrix=new Matrix4(cam.combined);
         debugMatrix.scale(5, 5, 1f);
         debugRenderer=new Box2DDebugRenderer();
-        util.InitBody(world,body,new Vector2(100,1),new Vector2(0,-20), BodyDef.BodyType.StaticBody);
+        body = util.InitBody(world,body,new Vector2(300,1),new Vector2(0,200), BodyDef.BodyType.StaticBody,1.f,0.5f,0.5f);
+        player.body.setTransform(200,215,0);
+        body.setTransform(200,160,0);
         Gdx.input.setInputProcessor(_stage);
     }
 
@@ -120,8 +123,7 @@ public class GDX_main extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
-        cam.translate(Interpolation.linear.apply(cam_x,player.GetPosition().x,Gdx.graphics.getDeltaTime()),
-                Interpolation.linear.apply(cam_y,player.GetPosition().y,Gdx.graphics.getDeltaTime()));
+        UpdateCamera(Gdx.graphics.getDeltaTime(),player.body.getPosition());
         cam.update();
         batch.begin();
         switch (_scene) {
@@ -134,6 +136,7 @@ public class GDX_main extends ApplicationAdapter {
                 renderer.setView(cam);
                 renderer.render();
                 player.render();
+                Gdx.app.log("LOG", player.body.getPosition().toString());
 //                flyingEye.render();
 //                goblin.render();
 //                mushroom.render();
@@ -146,7 +149,15 @@ public class GDX_main extends ApplicationAdapter {
         debugRenderer.render(world, debugMatrix);
         spritebatch.end();
     }
-
+    public void UpdateCamera(float dt, Vector2 pos){
+        Vector3 target = new Vector3(pos,0);
+        final float speed=dt*3.f,ispeed=1.0f-speed;
+        Vector3 cameraPosition = cam.position;
+        cameraPosition.scl(ispeed);
+        target.scl(speed);
+        cameraPosition.add(target);
+        cam.position.set(cameraPosition.x,cameraPosition.y+10,0);
+    }
     @Override
     public void dispose() {
         batch.dispose();

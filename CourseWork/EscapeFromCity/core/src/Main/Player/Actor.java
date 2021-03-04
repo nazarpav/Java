@@ -45,20 +45,8 @@ public abstract class Actor implements ApplicationListener {
     public void SetVelocity(float x, float y){
         body.setLinearVelocity(x, y);
     }
-    protected void InitPhysisc(World world,Vector2 w_h){
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bodyDef);
-        bodyDef.position.set(DrawPos.x, DrawPos.y);
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(w_h.x, w_h.y);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density=0.1f;
-        fixtureDef.friction = 0.7f;
-        fixtureDef.restitution = 0.3f;
-        Fixture fixture = body.createFixture(fixtureDef);
-        shape.dispose();
+    protected void InitPhysisc(World world,Vector2 w_h,Vector2 pos){
+        body = util.InitBody(world,body,w_h,pos, BodyDef.BodyType.DynamicBody,0.1f,0.7f,0.3f);
     }
     public void Update(){
         if(body!=null){
