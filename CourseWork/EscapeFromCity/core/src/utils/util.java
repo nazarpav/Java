@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.nazar_pavliuk.game.GDX_main;
 
 import java.util.Random;
 
@@ -42,6 +44,9 @@ public class util {
         float res =Gdx.graphics.getHeight()/testResolutionY;
         float f = res*in;
         return f;
+    }
+    public static Vector3 ToScreen(Vector2 pos) {
+        return GDX_main.cam.unproject(new Vector3(pos,0));
     }
     public static int ScaleerY(int in){
         return Gdx.graphics.getHeight()/testResolutionY.intValue()*in;

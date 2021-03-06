@@ -4,9 +4,11 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -24,10 +26,9 @@ import utils.util;
 
 public abstract class Actor implements ApplicationListener {
     protected Map<AnimMap, Animation> animations = new HashMap<AnimMap, Animation>();
-    protected Vector2 DrawPos;
-    public Body body;
+    private Body body;
     protected Animation _currentAnimation;
-    protected TextureRegion currentFrame;
+    protected Sprite currentFrame;
     protected SpriteBatch spriteBatch;
     protected AnimMap _currentstate;
     private boolean _isFlip=false;
@@ -35,11 +36,21 @@ public abstract class Actor implements ApplicationListener {
     private boolean _isPause=false;
     protected boolean _isLooping=true;
     public Vector2 GetPosition(){
-        return DrawPos;
+        if(body!=null){
+               return body.getPosition();
+        }
+        return  new Vector2(0,0);
+    }
+    public Vector2 GetPositionTex(){
+        if(currentFrame!=null){
+               return new Vector2(currentFrame.getX(),currentFrame.getY());
+        }
+        return  new Vector2(0,0);
     }
     @Override
     public void create() {
         spriteBatch= new SpriteBatch();
+        currentFrame=new Sprite();
         stateTime=util.rnd.nextFloat()%50;
     }
     public void SetVelocity(float x, float y){
@@ -47,11 +58,10 @@ public abstract class Actor implements ApplicationListener {
     }
     protected void InitPhysisc(World world,Vector2 w_h,Vector2 pos){
         body = util.InitBody(world,body,w_h,pos, BodyDef.BodyType.DynamicBody,0.1f,0.7f,0.3f);
+        body.setFixedRotation(true);
     }
     public void Update(){
-        if(body!=null){
-            DrawPos=body.getPosition();
-        }
+
     }
     public void SetAnimState(AnimMap state){
         Animation newState =  animations.get(state);
@@ -79,17 +89,18 @@ public abstract class Actor implements ApplicationListener {
     }
     @Override
     public void render() {
-        Update();
         if((_currentstate==AnimMap.Attack||_currentstate==AnimMap.TakeHit||_currentstate==AnimMap.Shield)&&_currentAnimation.isAnimationFinished(stateTime)){
             SetAnimState(AnimMap.Idle);
         }
         if(_isPause||animations.isEmpty())return;
         stateTime += Gdx.graphics.getDeltaTime();
-        currentFrame = (TextureRegion) _currentAnimation.getKeyFrame(stateTime, _isLooping);
+        currentFrame.setRegion((TextureRegion) _currentAnimation.getKeyFrame(stateTime, _isLooping));
         if(_isFlip&&!currentFrame.isFlipX()||!_isFlip&&currentFrame.isFlipX()){currentFrame.flip(true,false);}
         spriteBatch.begin();
-        spriteBatch.draw(currentFrame, util.Scaleer(DrawPos.x), util.Scaleer(DrawPos.y), util.Scaleer(250.f),util.Scaleer(250.f));
+        Vector2 pos = GetPosition();
+        spriteBatch.draw(currentFrame, pos.x,pos.y);
         spriteBatch.end();
+        Update();
     }
     @Override
     public void pause() {

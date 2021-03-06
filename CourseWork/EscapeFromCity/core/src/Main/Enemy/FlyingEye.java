@@ -18,7 +18,6 @@ public class FlyingEye extends Actor {
         animations.put(AnimMap.Attack, util.CreateAnimation(Gdx.files.internal(basePath+"Attack.png"),8,1,0.1f));
         animations.put(AnimMap.Death, util.CreateAnimation(Gdx.files.internal(basePath+"Death.png"),4,1,0.13f));
         animations.put(AnimMap.TakeHit, util.CreateAnimation(Gdx.files.internal(basePath+"TakeHit.png"),4,1,0.1f));
-        DrawPos= new Vector2(util.s_x/3/4,-60.f);
     }
     @Override
     public void render() {

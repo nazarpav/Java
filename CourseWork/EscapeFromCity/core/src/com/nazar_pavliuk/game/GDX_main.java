@@ -41,7 +41,7 @@ import utils.util;
 
 public class GDX_main extends ApplicationAdapter {
     private TiledMap t_map;
-    public OrthographicCamera cam;
+    public static OrthographicCamera cam;
     static  GDX_main instance;
     public World world;
     public Player player;
@@ -59,9 +59,7 @@ public class GDX_main extends ApplicationAdapter {
     public scene _scene;
     float unitScale =2.f;
     OrthogonalTiledMapRenderer renderer;
-    SpriteBatch spritebatch;
     Box2DDebugRenderer debugRenderer;
-    Matrix4 debugMatrix;
     public float cam_x,cam_y;
     public static GDX_main Instance() {
         return instance;
@@ -85,7 +83,7 @@ public class GDX_main extends ApplicationAdapter {
             instance = this;
         }
         cam = new OrthographicCamera(util.s_x, util.s_y);
-        cam.position.set(util.s_x/2 , util.s_y/2 , 0);
+        debugRenderer= new Box2DDebugRenderer();
         world = new World(new Vector2(0, -98f), true);
         t_map = new TmxMapLoader().load(Gdx.files.internal("t_map/EscapeFromCity.tmx").path());
         renderer = new OrthogonalTiledMapRenderer(t_map, unitScale);
@@ -94,7 +92,6 @@ public class GDX_main extends ApplicationAdapter {
         _stage = new Stage(new ScreenViewport());
         _scene=scene.Menu;
         batch_t_map= new SpriteBatch();
-        spritebatch= new SpriteBatch();
         batch= new SpriteBatch();
         bgMenu= new ParalaxBackground();
         bgMenu.Create();
@@ -103,28 +100,20 @@ public class GDX_main extends ApplicationAdapter {
         mainMenuUI= new MainMenuUI(_stage);
         player= new Player();
         player.create();
-        player.CreatePhysics(world,new Vector2(150,210));
+        player.CreatePhysics(world,new Vector2(0,0));
         flyingEye= new FlyingEye();
         flyingEye.create();
         goblin= new Goblin();
         goblin.create();
         mushroom= new Mushroom();
         mushroom.create();
-        debugMatrix=new Matrix4(cam.combined);
-        debugMatrix.scale(5, 5, 1f);
-        debugRenderer=new Box2DDebugRenderer();
-        body = util.InitBody(world,body,new Vector2(300,1),new Vector2(0,200), BodyDef.BodyType.StaticBody,1.f,0.5f,0.5f);
-        player.body.setTransform(200,215,0);
-        body.setTransform(200,160,0);
+        body = util.InitBody(world,body,new Vector2(300,1),new Vector2(0,0), BodyDef.BodyType.StaticBody,1.f,0.5f,0.5f);
         Gdx.input.setInputProcessor(_stage);
     }
 
     @Override
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
-        UpdateCamera(Gdx.graphics.getDeltaTime(),player.body.getPosition());
-        cam.update();
         batch.begin();
         switch (_scene) {
             case Menu:
@@ -133,10 +122,16 @@ public class GDX_main extends ApplicationAdapter {
             case Game:
 //                bgGame.DrawBG(batch,1.f,Gdx.graphics.getDeltaTime());
 //                bgGame.DrawFG(batch,1.f,Gdx.graphics.getDeltaTime());
+                world.step(Gdx.graphics.getDeltaTime(), 6, 2);
+                UpdateCamera(Gdx.graphics.getDeltaTime(),player.GetPosition());
+                cam.update();
                 renderer.setView(cam);
                 renderer.render();
                 player.render();
-                Gdx.app.log("LOG", player.body.getPosition().toString());
+                debugRenderer.render(world, cam.combined);
+                Gdx.app.log("LOG", player.GetPosition().toString());
+                Gdx.app.log("LOG Texture", player.GetPositionTex().toString());
+
 //                flyingEye.render();
 //                goblin.render();
 //                mushroom.render();
@@ -145,18 +140,14 @@ public class GDX_main extends ApplicationAdapter {
         batch.end();
         _stage.act(Gdx.graphics.getDeltaTime());
         _stage.draw();
-        spritebatch.begin();
-        debugRenderer.render(world, debugMatrix);
-        spritebatch.end();
     }
     public void UpdateCamera(float dt, Vector2 pos){
         Vector3 target = new Vector3(pos,0);
-        final float speed=dt*3.f,ispeed=1.0f-speed;
-        Vector3 cameraPosition = cam.position;
-        cameraPosition.scl(ispeed);
-        target.scl(speed);
-        cameraPosition.add(target);
-        cam.position.set(cameraPosition.x,cameraPosition.y+10,0);
+        final float speed=dt,ispeed=1.0f-speed;
+         //Vector3 cameraPosition = cam.position;
+         //cameraPosition.scl(ispeed);
+         //target.scl(speed);
+         //cameraPosition.add(target);
     }
     @Override
     public void dispose() {
